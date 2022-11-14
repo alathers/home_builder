@@ -1,0 +1,42 @@
+[user]
+	name = Adam Lathers
+	email = 
+
+[core]
+	excludesfile = /<PATH>
+[push]
+	default = current
+	autoSetupRemote = true
+[merge]
+	tool = opendiff
+[diff]
+	tool = opendiff
+[difftool]
+	prompt = false
+
+[merge]
+	renamelimit = 5000
+
+[pull]
+	rebase = true
+
+# https://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git/34467298#34467298
+[alias]
+    pcb = !"git push --set-upstream origin $(git symbolic-ref --short HEAD)"
+    db = !"git symbolic-ref refs/remotes/origin/HEAD | awk -F/ {'print $NF'}"
+    # cur_branch = !"git status -b | head -n 1 | awk {'print $NF'}"
+    gr = !"git config --get remote.origin.url"
+    brp = !"base_branch=$(git db); git checkout ${base_branch}; git pull; git remote prune origin"
+    last = !"git log --pretty=format:"%an" -n 1"
+    remthead = !"git remote set-head origin -a"
+    reup = !"git brp; git checkout - ; git rebase $(git db)"
+    lg = !"git lg1"
+    lg1 = !"git lg1-specific --all"
+    lg2 = !"git lg2-specific --all"
+    lg3 = !"git lg3-specific --all"
+
+    lg1-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+    lg2-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    lg3-specific = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+[init]
+	defaultBranch = main
